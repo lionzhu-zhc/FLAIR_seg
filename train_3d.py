@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# @Time    : 2020/6/13 17:01
+# @Time    : 2020/7/25 21:18
 # @Author  : LionZhu
+
 import torch
 import os
 from loss import *
-from nets.ISSegNet import *
-from nets.Unet import  *
+from nets.unet3d import *
 import torchvision.transforms as transforms
 from PIL import Image
 from datasets import ImageDataset
@@ -20,7 +20,7 @@ Server = 0
 #---------------------paths--------------------------------------------------
 if Server == 0:
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all/'
+    path = 'D:\datasets\diyiyiyuan\DWIFLAIR\more4.5h\dwi_npys_3d/'
     out_path = path + 'exps/exp2/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
@@ -33,45 +33,36 @@ if Server == 0:
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #-----------------Img parameters----------------------------------------------
 img_paras = {'img_H': 128,
+             'img_D': 16,
              'in_channel': 1 ,
              'class_num': 2,
              'drop': 0.0}
 
 #------------training parameters----------------------------------------------
-train_paras = {'Epoch':300,
-               'BS':32,
+train_paras = {'Epoch':200,
+               'BS':16,
                'lr': 1e-3,
                'ValFlag': True,
                'TestFlag': True
                }
 
-SaveInterval = train_paras['Epoch'] // 2 if train_paras['Epoch'] // 2 > 0 else 1
-DecayInterval = train_paras['Epoch'] // 10 if train_paras['Epoch'] // 10 > 0 else 1
+SaveInterval = train_paras['Epoch'] // 2
+if SaveInterval == 0:
+    SaveInterval = 1
+DecayInterval = train_paras['Epoch'] // 10
+if DecayInterval == 0:
+    DecayInterval = 1
 
-# model = ISSegNet(in_channel= img_paras['in_channel'], class_num= img_paras['class_num'], )
-model = UNet(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'])
+model = UNet(in_dim= img_paras['in_channel'], out_dim= img_paras['class_num'], num_filters= 8)
 model.to(device = device)
 optimizer = torch.optim.Adam(model.parameters(), lr=train_paras['lr'])
 weights = torch.Tensor([1,1]).to(device=device)
 criterion = WeightedBCE(weight= weights)
 
-# Dataset loader
-transforms_train = transforms.Compose(
-                [ transforms.ToPILImage(),
-                transforms.Resize(int(img_paras['img_H']*1.12), Image.BICUBIC),
-                transforms.RandomCrop(img_paras['img_H']),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor()])
-
-transforms_test = transforms.Compose([
-                                        transforms.ToPILImage(),
-                                        transforms.ToTensor()
-                                        ])
-
 if __name__ == '__main__':
     lr= train_paras['lr']
     # train------------------------------------------------------------------------
-    dataloader = DataLoader(ImageDataset(path, aug= True),
+    dataloader = DataLoader(ImageDataset(path),
                             batch_size=train_paras['BS'], shuffle=True, num_workers=1)
     model.train()
     Train_loss = []
@@ -107,7 +98,7 @@ if __name__ == '__main__':
 
     # test -----------------------------------------------------------------------------
     if train_paras['TestFlag']:
-        dataloader = DataLoader(ImageDataset(path, aug= False, mode='test'),
+        dataloader = DataLoader(ImageDataset(path,mode='test'),
                                 batch_size=train_paras['BS'], shuffle=False, num_workers=1)
         model.eval()
         for i, batch in enumerate(dataloader):
@@ -126,10 +117,9 @@ if __name__ == '__main__':
             for j in range(len(img_names)):
                 label = np.squeeze(msk_batch[j, ...])
                 seg = np.squeeze(pred[j, ...])
-
                 names = img_names[j].split('\\')
                 name_pre = names[-1]
                 name_pre = name_pre[:-4]
                 print("test_itr:", name_pre)
-                save_imgs(out_path, name_pre, label, seg)
-                save_npys(out_path, name_pre, label, seg)
+                save_imgs_3d(out_path, name_pre, label, seg, img_depth= img_paras['img_D'])
+                save_npys_3d(out_path, name_pre, label, seg, img_depth= img_paras['img_D'])

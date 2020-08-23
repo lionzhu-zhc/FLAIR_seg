@@ -7,12 +7,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = 'D:\datasets\diyiyiyuan\DWIFLAIR\more4h5\FLAIR_npys/test/'
-img = np.load(path+'/img/S60062-3_14.npy')
-seg = np.load(path+'/seg/S59960-3_7.npy')
-
-plt.imshow(img, cmap='gray', vmin= 500, vmax=1000)
+path = 'D:\datasets\gulou_ctpcta/npys/train\ctp/20200304001394759_793.17.npy'
+seg = np.load(path)
+a = seg[8,...]
+plt.imshow(a, cmap='gray', vmin=-0.5, vmax=1)
 plt.show()
-plt.imshow(seg, cmap='gray')
-plt.show()
-print(img[seg==1])

@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 # ori_path = 'D:/datasets/stroke_sryzd/zd_all/data/128/'
-ori_path = 'D:\datasets\diyiyiyuan\DWIFLAIR\more4.5h\dwi_npys\exps/'
+ori_path = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all\exps/'
 path = ori_path+ 'exp2/'
 exp_path = path + 'npys/'
 pats = os.listdir(exp_path)
