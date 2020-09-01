@@ -16,12 +16,12 @@ from solver import *
 import matplotlib.pyplot as plt
 from save_img import *
 
-Server = 0
+Server = 1
 #---------------------paths--------------------------------------------------
 if Server == 0:
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all/'
-    out_path = path + 'exps/exp2/'
+    path = 'D:\datasets\diyiyiyuan\DWIFLAIR/dwi_npy2d_all/'
+    out_path = path + 'exps/exp4/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
     if not os.path.exists(npy_path):
@@ -29,7 +29,16 @@ if Server == 0:
     if not os.path.exists(pkl_path):
         os.makedirs(pkl_path)
 
-
+elif Server == 1:
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    path = '/opt/zhc/dwi_flair/flair_npy2d_all/'
+    out_path = path + 'exps/exp4/'
+    npy_path = out_path + 'npys/'
+    pkl_path = out_path + 'pkls/'
+    if not os.path.exists(npy_path):
+        os.makedirs(npy_path)
+    if not os.path.exists(pkl_path):
+        os.makedirs(pkl_path)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #-----------------Img parameters----------------------------------------------
 img_paras = {'img_H': 128,
@@ -52,8 +61,8 @@ DecayInterval = train_paras['Epoch'] // 10 if train_paras['Epoch'] // 10 > 0 els
 model = UNet(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'])
 model.to(device = device)
 optimizer = torch.optim.Adam(model.parameters(), lr=train_paras['lr'])
-weights = torch.Tensor([1,1]).to(device=device)
-criterion = WeightedBCE(weight= weights)
+weights = torch.Tensor([1,0.1]).to(device=device)
+criterion = WeightCE(weight= weights)
 
 # Dataset loader
 transforms_train = transforms.Compose(
@@ -75,7 +84,8 @@ if __name__ == '__main__':
                             batch_size=train_paras['BS'], shuffle=True, num_workers=1)
     model.train()
     Train_loss = []
-    Epoch = []
+    Iters = []
+    iter = 0
     for epoch in range(train_paras['Epoch']):
         if epoch % DecayInterval == 0 and epoch > 0:
             lr = lr * 0.9
@@ -91,14 +101,15 @@ if __name__ == '__main__':
             loss.backward()
             optimizer.step()
             print('Epoch: {} | {}, Iter: {}, loss: {}'.format(epoch, train_paras['Epoch'], i, loss.item()))
-        Train_loss.append(loss.item())
-        Epoch.append(epoch)
+            Train_loss.append(loss.item())
+            Iters.append(iter)
+            iter += 1
 
         if (epoch+1) % SaveInterval == 0:
             torch.save(model.state_dict(), pkl_path + 'net_paras_epoch{}.pkl'.format(epoch+1))
 
     fig1 = plt.figure(1)
-    plt.plot(Epoch, Train_loss, 'o-')
+    plt.plot(Iters, Train_loss, 'o-')
     plt.title('Train loss vs. Epoch')
     plt.pause(2)
     plt.draw()
@@ -127,9 +138,35 @@ if __name__ == '__main__':
                 label = np.squeeze(msk_batch[j, ...])
                 seg = np.squeeze(pred[j, ...])
 
-                names = img_names[j].split('\\')
+                names = img_names[j].split('/')
                 name_pre = names[-1]
                 name_pre = name_pre[:-4]
                 print("test_itr:", name_pre)
                 save_imgs(out_path, name_pre, label, seg)
                 save_npys(out_path, name_pre, label, seg)
+
+    # cal dice
+    pats = os.listdir(npy_path)
+    liver_label = 0
+    liver_pred = 0
+    liver_labPred = 0
+
+    for j in range(len(pats)):
+        npys = os.listdir(npy_path + pats[j])
+        for img_i in range(0, len(npys), 2):
+            label_batch = np.load(npy_path + pats[j] + '/' + npys[img_i])
+            # label_batch = label_batch[0:110, 10:128]
+            pred_batch = np.load(npy_path + pats[j] + '/' + npys[img_i+1])
+            # pred_batch = pred_batch[0:110, 10:128]
+            liver_label = liver_label + np.count_nonzero(label_batch == 1)
+            liver_pred = liver_pred + np.count_nonzero(pred_batch == 1)
+
+            label_bool = (label_batch == 1)
+            pred_bool = (pred_batch == 1)
+            # common = np.logical_and(label_bool, pred_bool)
+            common = label_bool * pred_bool
+            liver_labPred = liver_labPred + np.count_nonzero(common)
+    liver_dice_coe = 2 * liver_labPred / (liver_label + liver_pred + 1e-6)
+    with open(path + 'exps/dice.txt', 'a+') as resltFile:
+        resltFile.write(out_path + ":  %.3f " %(liver_dice_coe) +
+                        'label: {} pred: {} labpred: {} \n'.format(liver_label, liver_pred, liver_labPred))

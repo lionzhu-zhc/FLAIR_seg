@@ -43,56 +43,6 @@ class Dice_Loss(nn.Module):
 
         return loss
 
-
-
-
-
-class GDiceLoss(nn.Module):
-    def __init__(self, apply_nonlin=False, smooth=1e-5):
-        """
-        Generalized Dice;
-        Copy from: https://github.com/LIVIAETS/surface-loss/blob/108bd9892adca476e6cdf424124bc6268707498e/losses.py#L29
-        paper: https://arxiv.org/pdf/1707.03237.pdf
-        tf code: https://github.com/NifTK/NiftyNet/blob/dev/niftynet/layer/loss_segmentation.py#L279
-        """
-        super(GDiceLoss, self).__init__()
-
-        self.apply_nonlin = apply_nonlin
-        self.smooth = smooth
-
-    def forward(self, net_output, gt):
-        shp_x = net_output.shape  # (batch size,class_num,x,y,z)
-        shp_y = gt.shape  # (batch size,1,x,y,z)
-        # # one hot code for gt
-        # with torch.no_grad():
-        #     if len(shp_x) != len(shp_y):
-        #         gt = gt.view((shp_y[0], 1, *shp_y[1:]))
-        #
-        #     if all([i == j for i, j in zip(net_output.shape, gt.shape)]):
-        #         # if this is the case then gt is probably already a one hot encoding
-        #         y_onehot = gt
-        #     else:
-        #         gt = gt.long()
-        #         y_onehot = torch.zeros(shp_x)
-        #         if net_output.device.type == "cuda":
-        #             y_onehot = y_onehot.cuda(net_output.device.index)
-        #         y_onehot.scatter_(1, gt, 1)
-        #
-        # if self.apply_nonlin == True:
-        #     output = softmax_helper(net_output)
-        #
-        # # copy from https://github.com/LIVIAETS/surface-loss/blob/108bd9892adca476e6cdf424124bc6268707498e/losses.py#L29
-        # w: torch.Tensor = 1 / (einsum("bcxyz->bc", y_onehot).type(torch.float32) + 1e-10) ** 2
-        # intersection: torch.Tensor = w * einsum("bcxyz, bcxyz->bc", output, y_onehot)
-        # union: torch.Tensor = w * (einsum("bcxyz->bc", output) + einsum("bcxyz->bc", y_onehot))
-        # divided: torch.Tensor = 1 - 2 * (einsum("bc->b", intersection) + self.smooth) / (
-        # einsum("bc->b", union) + self.smooth)
-        # gdc = divided.mean()
-        #
-        # return gdc
-
-
-
 def flatten(tensor):
     """Flattens a given tensor such that the channel axis is first.
     The shapes are transformed as follows:
@@ -105,7 +55,6 @@ def flatten(tensor):
     transposed = tensor.permute(axis_order).contiguous()
     # Flatten: (C, N, D, H, W) -> (C, N * D * H * W)
     return transposed.view(C, -1)
-
 
 def softmax_helper(x):
     rpt = [1 for _ in range(len(x.size()))]
@@ -205,3 +154,16 @@ class CE_Dice_Loss(nn.Module):
         a = self.ce(y_pred, y_true)
         b = self.dice(y_pred, y_true)
         return self.alpha * a + (1-self.alpha) * b
+
+class WeightCE(nn.Module):
+    def __init__(self, weight=None):
+        super(WeightCE, self).__init__()
+        self.weight = weight
+
+    def __call__(self, input, target):
+        Criterion = torch.nn.CrossEntropyLoss(self.weight)
+        if target.dtype != torch.long:
+            target = target.long()
+        loss = Criterion(input, target)
+        return loss
+
