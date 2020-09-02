@@ -3,8 +3,36 @@ import random
 import tensorflow as tf
 import os
 import scipy.misc as smc
+import cv2
 
 #-----------------------for 2D data read and save------------------------------------------
+def randomFlipud(img, msk, u=0.5):
+    if random.random() < u:
+        img = np.flipud(img)
+        msk = np.flipud(msk)
+    return img.astype(np.float32), msk.astype(np.int32)
+
+def randomFliplr(img, msk, u=0.5):
+    if random.random() < u:
+        img = np.fliplr(img)
+        msk = np.fliplr(msk)
+    return img.astype(np.float32), msk.astype(np.int32)
+
+def randomRotate90(img, msk, u=0.5):
+    if random.random() < u:
+        img = np.rot90(img)
+        msk = np.rot90(msk)
+    return img.astype(np.float32), msk.astype(np.int32)
+
+def randomCrop(img, msk, u=0.5):
+    if random.random() < u:
+        h,w = img.shape
+        img2 = cv2.resize(img, (int(h * 1.2), int(w * 1.2)))
+        img = img2[(int(h*1.2-h)//2) : (int(h*1.2-h)//2 + h), (int(w*1.2-w)//2) : (int(w*1.2-w)//2 + w)]
+        msk2 = cv2.resize(msk.astype(np.float32), (int(h * 1.2), int(w * 1.2)))
+        msk = msk2[(int(h * 1.2 - h) // 2): (int(h * 1.2 - h) // 2 + h),
+               (int(w * 1.2 - w) // 2): (int(w * 1.2 - w) // 2 + w)]
+    return img.astype(np.float32), msk.astype(np.int32)
 
 def get_data_train_2d(trainPath, batchsize):
     vol_batch = []
@@ -16,22 +44,27 @@ def get_data_train_2d(trainPath, batchsize):
             vol_batch_tmp, seg_batch_tmp = get_batch_train_2d(trainPath)
             vol_batch = np.concatenate((vol_batch, vol_batch_tmp), axis=0)
             seg_batch = np.concatenate((seg_batch, seg_batch_tmp), axis=0)
-    vol_batch = np.expand_dims(vol_batch, axis=3)
     return vol_batch, seg_batch     #NHWC, NHWC
 
 def get_batch_train_2d(trainPath):
-    dirs_train = os.listdir(trainPath + 'vol/')
+    dirs_train = os.listdir(trainPath + 'img/')
     samples = random.choice(dirs_train)
     #print(samples)
-    vol_batch = np.load(trainPath + 'vol/' + samples)
-    seg_batch = np.load(trainPath + 'seg/' + samples)
+    vol_batch = np.load(trainPath + 'img/' + samples)   # 128x128
+    seg_batch = np.load(trainPath + 'seg/' + samples)   # 128x128
+    # --- data augmentation-------------
+    vol_batch, seg_batch = randomFlipud(vol_batch, seg_batch)
+    vol_batch, seg_batch = randomFliplr(vol_batch, seg_batch)
+    vol_batch, seg_batch = randomRotate90(vol_batch, seg_batch)
+    vol_batch, seg_batch = randomCrop(vol_batch, seg_batch)
+
     vol_batch = np.expand_dims(vol_batch, axis=0)
     seg_batch = np.expand_dims(seg_batch, axis=0)
-    #vol_batch = np.expand_dims(vol_batch, axis=3)
+    vol_batch = np.expand_dims(vol_batch, axis=3)
     seg_batch = np.expand_dims(seg_batch, axis=3)
     vol_batch.astype(np.float32)
     seg_batch.astype(np.int32)
-    return vol_batch, seg_batch
+    return vol_batch, seg_batch     # 1x128x128x1, 1x128x128x1
 
 
 def get_data_test_2d(testPath, tDir, batchsize):
@@ -44,14 +77,14 @@ def get_data_test_2d(testPath, tDir, batchsize):
             vol_batch_tmp, seg_batch_tmp = get_batch_test_2d(testPath, tDir, i-1)
             vol_batch = np.concatenate((vol_batch, vol_batch_tmp), axis = 0)
             seg_batch = np.concatenate((seg_batch, seg_batch_tmp), axis = 0)
-    vol_batch = np.expand_dims(vol_batch, axis=3)
     return vol_batch, seg_batch  # NHWC, NHWC
 
 def get_batch_test_2d(testPath, tDir, ind):
-    vol_batch = np.load(testPath + 'vol/' + tDir[ind])
+    vol_batch = np.load(testPath + 'img/' + tDir[ind])
     seg_batch = np.load(testPath + 'seg/' + tDir[ind])
     vol_batch = np.expand_dims(vol_batch, axis = 0)
     seg_batch = np.expand_dims(seg_batch, axis = 0)
+    vol_batch = np.expand_dims(vol_batch, axis=3)
     seg_batch = np.expand_dims(seg_batch, axis = 3)
     vol_batch.astype(np.float32)
     seg_batch.astype(np.int32)

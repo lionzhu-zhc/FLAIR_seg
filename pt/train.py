@@ -5,8 +5,8 @@
 # @Author  : LionZhu
 import torch
 import os
-from loss import *
-from nets.ISSegNet import *
+from pt.loss import *
+from pt.nets.ISSegNet import *
 from nets.Unet import  *
 import torchvision.transforms as transforms
 from PIL import Image

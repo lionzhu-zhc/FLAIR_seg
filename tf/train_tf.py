@@ -1,4 +1,4 @@
-import tf.nets.unetplusplus as Unetpp
+import tf.nets.unetpp as Unetpp
 import tf.nets.loss as Loss
 import tf.utils as utils
 import os
@@ -6,15 +6,15 @@ import tensorflow as tf
 import math
 import numpy as np
 
-Server = 1
+Server = 0
 #---------------------paths--------------------------------------------------
 if Server == 0:
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = 'D:\datasets\diyiyiyuan\DWIFLAIR/dwi_npy2d_all/'
+    path = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all/'
     trainPath = path + 'train/'
     testPath = path + 'test/'
-    TotalNum = len(os.listdir(trainPath + 'vol/'))
-    out_path = path + 'exps/exp4/'
+    TotalNum = len(os.listdir(trainPath + 'img/'))
+    out_path = path + 'exps/tf_exp1/'
     npy_path = out_path + 'npys/'
     ckpt_path = out_path + 'ckpt/'
     if not os.path.exists(npy_path):
@@ -36,11 +36,11 @@ elif Server == 1:
 #-Img paras------------------------------------------------------------------------------------------------------------
 IMAGE_WIDTH = 128
 IMAGE_HEIGHT = 128
-IMAGE_CHANNEL = 5
+IMAGE_CHANNEL = 1
 CLASSNUM = 2
 
 #-training paras--------------------------------------------------------------------------------------------------------
-EPOCH = 150
+EPOCH = 300
 TRAIN_BATCHSIZE = 32
 LEARNING_RATE = 1e-3
 
@@ -50,7 +50,7 @@ MAX_ITERATION = ITER_PER_EPOCH * EPOCH
 # MAX_ITERATION = 10
 SAVE_CKPT_INTERVAL = ITER_PER_EPOCH * EPOCH // 2
 
-ValidFlag = True
+ValidFlag = False
 TestFlag = True
 
 def early_training(lr, loss_val, va_list):
@@ -80,7 +80,7 @@ def FCNX_run():
     logits, pred_annot = Unetpp.unetpp(tensor_in=image, BN_FLAG=bn_flag, CLASSNUM=CLASSNUM)
 
     with tf.variable_scope('loss'):
-        class_weight = tf.constant([0.1, 1])
+        class_weight = tf.constant([0.1, 2])
         loss_reduce = Loss.cross_entropy_loss(pred= logits, ground_truth= annotation, class_weight = class_weight)
         # loss_reduce = LossPy.iou_loss(pred = logits, target= annotation, class_num= CLASSNUM)
 
@@ -164,7 +164,7 @@ def FCNX_run():
             #-Test Test Test Test---------------------------------------------------------------------------------------
             if itr == (MAX_ITERATION - 1) and TestFlag:
                 print('End training:.......')
-                test_dirs = os.listdir(testPath + '/vol/')
+                test_dirs = os.listdir(testPath + '/img/')
                 test_num = len(test_dirs)
 
                 if test_num < TRAIN_BATCHSIZE:

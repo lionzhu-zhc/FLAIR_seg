@@ -4,7 +4,7 @@ compute dif loss fun
 '''
 
 import tensorflow as tf
-import utils.utils_fun as utils
+import tf.utils as utils
 
 def dice(pred, ground_truth, weight_map = None):
     '''
