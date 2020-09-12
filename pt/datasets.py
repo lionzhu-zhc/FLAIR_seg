@@ -63,7 +63,7 @@ class ImageDataset(Dataset):
             img = np.ascontiguousarray(img, dtype=np.float32)
             seg = np.ascontiguousarray(seg, dtype=np.uint8)
 
-        img = np.expand_dims(img, axis=0)
+        img = np.expand_dims(img, axis=0)   # expand img channel 1
         name_img = self.files_A[index % len(self.files_A)]
         name_seg = self.files_B[index % len(self.files_B)]
 

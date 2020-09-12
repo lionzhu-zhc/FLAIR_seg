@@ -16,7 +16,7 @@ def save_imgs(result_path, name_pre, label_batch, pred_batch, img_depth =1):
     IMAGE_HEIGHT = label_batch.shape[-2]
     IMAGE_WIDTH = label_batch.shape[-1]
     str_split = name_pre.split('_')
-    casePath = result_path + 'imgs/' +  str_split[0] + '/'
+    casePath = result_path + 'imgs/' +  str_split[0] + '_' + str_split[1] + '/'
     # casePath = resultPath + 'imgs/' + str_split[1]  + '/'
     if not (os.path.exists(casePath)):
         os.makedirs(casePath)
@@ -51,16 +51,16 @@ def save_imgs(result_path, name_pre, label_batch, pred_batch, img_depth =1):
         label_img_mat = np.transpose(label_img_mat, [1, 2, 0])
 
         smc.toimage(label_img_mat, cmin=0.0, cmax=255).save(
-            casePath + str_split[1] + '-seg.png')
+            casePath + str_split[-1] + '-seg.png')
 
 
 def save_npys(res_path, name_pre, label_batch, pred_batch, score_batch= None):
     str_split = name_pre.split('_')
-    casePath = res_path + 'npys/' + str_split[0] + '/'
+    casePath = res_path + 'npys/' + str_split[0] + '_' + str_split[1] + '/'
     if not (os.path.exists(casePath)):
         os.makedirs(casePath)
-    np.save(casePath + str_split[1] + '-mask.npy', label_batch)
-    np.save(casePath + str_split[1] + '-pred.npy', pred_batch)
+    np.save(casePath + str_split[-1] + '-mask.npy', label_batch)
+    np.save(casePath + str_split[-1] + '-pred.npy', pred_batch)
     if score_batch is not None:
         np.save(casePath + str_split[1] + '-score.npy', score_batch)
 

@@ -4,7 +4,7 @@ import os
 
 # ori_path = 'D:/datasets/stroke_sryzd/zd_all/data/128/'
 ori_path = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all\exps/'
-path = ori_path+ 'exp7/'
+path = ori_path+ 'tf_exp1/'
 exp_path = path + 'npys/'
 pats = os.listdir(exp_path)
 
