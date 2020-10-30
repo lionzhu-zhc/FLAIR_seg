@@ -46,12 +46,21 @@ import pt.loss as loss
 #             os.remove(ori_path2 + 'img/' + npy)
 #             os.remove(ori_path2+'seg/'+npy)
 
-a = torch.Tensor([1,0,0,0,1])
-b = loss.to_onehot(a, 2)
-# a = np.load('D:\datasets\diyiyiyuan\DWIFLAIR\exp_data1\dwi_npy2d_all/train\seg/S1040-1_0_ori.npy')
+
 #
 # plt.imshow(a, cmap='gray', vmin=-0.5, vmax=1)
 # plt.show()
+pred = np.load('D:\datasets\diyiyiyuan\DWIFLAIR\exp_data2/npys/flair\exps\exp1/npys\L_S50680(1)/8-pred.npy')
+mask = np.load('D:\datasets\diyiyiyuan\DWIFLAIR\exp_data2/npys/flair\exps\exp1/npys\L_S50680(1)/8-mask.npy')
+pred_num = np.count_nonzero(pred == 1)
+mask_num = np.count_nonzero(mask == 1)
+c = pred * mask
+inter = np.count_nonzero(c)
+print(pred_num)
+print(mask_num)
+print(inter)
 
-print(b)
+# plt.imshow(a, cmap='gray', vmin=0, vmax=1)
+# plt.show()
+# print(a)
 print('ok')

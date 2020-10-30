@@ -2,9 +2,9 @@ import numpy as np
 import os
 
 
-# ori_path = 'D:/datasets/stroke_sryzd/zd_all/data/128/'
-ori_path = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all\exps/'
-path = ori_path+ 'tf_exp1/'
+# ori_path = '/opt/zhc/dwi_flair/exp_data2/flair/exps/'
+ori_path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data2/npys/dwi\exps/'
+path = ori_path+ 'exp7/'
 exp_path = path + 'npys/'
 pats = os.listdir(exp_path)
 
@@ -19,6 +19,7 @@ for j in range(len(pats)):
         label_batch = np.load(exp_path + pats[j] + '/' + npys[img_i])
         # label_batch = label_batch[0:110, 10:128]
         pred_batch = np.load(exp_path + pats[j] + '/' + npys[img_i+1])
+        pred_batch = pred_batch.astype(np.uint8)
         # pred_batch = pred_batch[0:110, 10:128]
         liver_label = liver_label + np.count_nonzero(label_batch == 1)
         liver_pred = liver_pred + np.count_nonzero(pred_batch == 1)

@@ -60,7 +60,7 @@ def save_npys(res_path, name_pre, label_batch, pred_batch, score_batch= None):
     if not (os.path.exists(casePath)):
         os.makedirs(casePath)
     np.save(casePath + str_split[-1] + '-mask.npy', label_batch)
-    np.save(casePath + str_split[-1] + '-pred.npy', pred_batch)
+    np.save(casePath + str_split[-1] + '-pred.npy', pred_batch.astype(np.uint8))
     if score_batch is not None:
         np.save(casePath + str_split[1] + '-score.npy', score_batch)
 
@@ -111,6 +111,6 @@ def save_npys_3d(res_path, name_pre, label_batch, pred_batch, score_batch= None,
     if not (os.path.exists(casePath)):
         os.makedirs(casePath)
     np.save(casePath + 'mask.npy', label_batch)
-    np.save(casePath + 'pred.npy', pred_batch)
+    np.save(casePath + 'pred.npy', pred_batch.astype(np.uint8))
     if score_batch is not None:
         np.save(casePath +'score.npy', score_batch)

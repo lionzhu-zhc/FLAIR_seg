@@ -39,6 +39,7 @@ class WeightCE(nn.Module):
 
 
 class DiceLoss(nn.Module):
+    # copy from pytorch-segmentation-master
     def __init__(self, smooth=1e-5, ignore_index=255):
         super(DiceLoss, self).__init__()
         self.ignore_index = ignore_index
@@ -50,12 +51,12 @@ class DiceLoss(nn.Module):
                 target[target == self.ignore_index] = target.min()
         target = to_onehot(target, output.size()[1])
         target = target.permute(0,3,1,2)
-        output = F.softmax(output, dim=1)
-        output_flat = output.contiguous().view(-1)
-        target_flat = target.contiguous().view(-1).to(torch.float32)
-        intersection = (output_flat * target_flat).sum()
+        output = torch.sigmoid(output)
+        output_flat = output.contiguous().view(output.shape[0], -1)
+        target_flat = target.contiguous().view(output.shape[0], -1).to(torch.float32)
+        intersection = (output_flat * output_flat * output_flat * target_flat).sum()
         loss = 1 - ((2. * intersection + self.smooth) /
-                    (output_flat.sum() + target_flat.sum() + self.smooth))
+                    ((output_flat*output_flat).sum() + (target_flat*target_flat).sum() + self.smooth))
         return loss
 
 
@@ -67,6 +68,8 @@ class FocalLoss(nn.Module):
         self.CE_loss = nn.CrossEntropyLoss(ignore_index=ignore_index, weight=alpha)
 
     def forward(self, output, target):
+        if target.dtype != torch.long:
+            target = target.long()
         logpt = self.CE_loss(output, target)
         pt = torch.exp(-logpt)
         loss = ((1 - pt) ** self.gamma) * logpt
@@ -76,11 +79,11 @@ class FocalLoss(nn.Module):
 
 
 class CE_DiceLoss(nn.Module):
-    def __init__(self, smooth=1e-5, alpha = 0.4, reduction='mean', ignore_index=255, weight=None):
+    def __init__(self, smooth=1e-5, alpha = 1, reduction='mean', ignore_index=255, weight=None):
         super(CE_DiceLoss, self).__init__()
         self.smooth = smooth
         self.dice = DiceLoss()
-        self.cross_entropy = WeightCE()
+        self.cross_entropy = WeightCE(weight)
         self.alpha = alpha
 
     def forward(self, output, target):
@@ -102,3 +105,14 @@ class LovaszSoftmax(nn.Module):
         return loss
 
 
+
+if __name__ == '__main__':
+    a = torch.Tensor([[0,1,0], [1,0,0], [1,0,0]]).unsqueeze(0)
+    b = torch.Tensor([[1,0,0], [0,0,1], [1,0,0]]).unsqueeze(0)
+    c = torch.cat([a,b], dim=0)
+    y = c[1,...]
+    d = to_onehot(c, 2)
+    e = d.permute(0,3,1,2).contiguous()
+    print(e[0,...])
+    x = e[1,:,2,0]
+    print (c.sum())
