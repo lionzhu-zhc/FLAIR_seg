@@ -7,8 +7,8 @@
 import os
 import numpy as np
 import scipy.misc as smc
-# import cv2
-from PIL import Image
+import cv2
+# from PIL import Image
 
 
 def save_imgs(result_path, name_pre, label_batch, pred_batch, img_depth =1):
@@ -52,17 +52,24 @@ def save_imgs(result_path, name_pre, label_batch, pred_batch, img_depth =1):
 
         smc.toimage(label_img_mat, cmin=0.0, cmax=255).save(
             casePath + str_split[-1] + '-seg.png')
+        # cv2.imwrite(casePath + str_split[-1] + '-seg.png', label_img_mat)
 
 
 def save_npys(res_path, name_pre, label_batch, pred_batch, score_batch= None):
     str_split = name_pre.split('_')
-    casePath = res_path + 'npys/' + str_split[0] + '_' + str_split[1] + '/'
-    if not (os.path.exists(casePath)):
-        os.makedirs(casePath)
-    np.save(casePath + str_split[-1] + '-mask.npy', label_batch)
-    np.save(casePath + str_split[-1] + '-pred.npy', pred_batch.astype(np.uint8))
+    casePath1 = res_path + 'npys/mask/' + str_split[0] + '_' + str_split[1] + '/'
+    casePath2 = res_path + 'npys/pred/' + str_split[0] + '_' + str_split[1] + '/'
+    casePath3 = res_path + 'npys/score/' + str_split[0] + '_' + str_split[1] + '/'
+    if not (os.path.exists(casePath1)):
+        os.makedirs(casePath1)
+    if not (os.path.exists(casePath2)):
+        os.makedirs(casePath2)
+    np.save(casePath1 + str_split[-1] + '.npy', label_batch)
+    np.save(casePath2 + str_split[-1] + '.npy', pred_batch.astype(np.uint8))
     if score_batch is not None:
-        np.save(casePath + str_split[1] + '-score.npy', score_batch)
+        if not (os.path.exists(casePath3)):
+            os.makedirs(casePath3)
+        np.save(casePath3 + str_split[1] + '.npy', score_batch)
 
 
 
@@ -105,6 +112,7 @@ def save_imgs_3d(result_path, name_pre, label_batch, pred_batch, img_depth =1):
 
         smc.toimage(label_img_mat, cmin=0.0, cmax=255).save(
             casePath + '{}-seg.png'.format(dept))
+        # cv2.imwrite(casePath + '{}-seg.png'.format(dept), label_img_mat)
 
 def save_npys_3d(res_path, name_pre, label_batch, pred_batch, score_batch= None, img_depth = 1):
     casePath = res_path + 'npys/' + name_pre + '/'

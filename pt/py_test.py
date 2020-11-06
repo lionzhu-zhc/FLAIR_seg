@@ -50,17 +50,26 @@ import pt.loss as loss
 #
 # plt.imshow(a, cmap='gray', vmin=-0.5, vmax=1)
 # plt.show()
-pred = np.load('D:\datasets\diyiyiyuan\DWIFLAIR\exp_data2/npys/flair\exps\exp1/npys\L_S50680(1)/8-pred.npy')
-mask = np.load('D:\datasets\diyiyiyuan\DWIFLAIR\exp_data2/npys/flair\exps\exp1/npys\L_S50680(1)/8-mask.npy')
-pred_num = np.count_nonzero(pred == 1)
-mask_num = np.count_nonzero(mask == 1)
-c = pred * mask
-inter = np.count_nonzero(c)
-print(pred_num)
-print(mask_num)
-print(inter)
 
-# plt.imshow(a, cmap='gray', vmin=0, vmax=1)
-# plt.show()
-# print(a)
+
+path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\cls_npys\data/test/'
+dst_path1 = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\cls_npys\data2\dwi/test/'
+dst_path2 = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\cls_npys\data2/flair/test/'
+
+# npys = os.listdir(path+'img/')
+# for name in npys:
+#     names = name.split('_')
+#     if names[-1] == 'dwi.npy':
+#         dwi_img = np.load(path+'img/'+name)
+#         dwi_seg = np.load(path+'seg/'+name)
+#         np.save(dst_path1 + 'img/' + names[0]+'_'+names[1] + '.npy', dwi_img)
+#         np.save(dst_path1 + 'seg/' + names[0]+'_'+names[1] + '.npy', dwi_seg)
+#     if names[-1] == 'flair.npy':
+#         flair_img = np.load(path+'img/'+name)
+#         flair_seg = np.load(path+'seg/'+name)
+#         np.save(dst_path2 + 'img/' + names[0]+'_'+names[1] + '.npy', flair_img)
+#         np.save(dst_path2 + 'seg/' + names[0]+'_'+names[1] + '.npy', flair_seg)
+
+a = np.load('D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\cls_npys\data/flair/train\img/L_S1040-1.npy')
+a = np.expand_dims(a,axis=0)
 print('ok')

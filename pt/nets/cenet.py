@@ -479,19 +479,21 @@ class outconv(nn.Module):
 
 
 class UNet(nn.Module):
-    def __init__(self, n_channels=3, n_classes=1):
+    def __init__(self, n_channels=3, n_classes=1, init_w = False):
         super(UNet, self).__init__()
         self.inc = inconv(n_channels, 64)
-        self.down1 = down(64, 128)
-        self.down2 = down(128, 256)
-        self.down3 = down(256, 512)
-        self.down4 = down(512, 512)
+        self.down1 = down(64, 128)      # 1/2
+        self.down2 = down(128, 256)     # 1/4
+        self.down3 = down(256, 512)     # 1/8
+        self.down4 = down(512, 512)     # 1/16
         self.up1 = up(1024, 256)
         self.up2 = up(512, 128)
         self.up3 = up(256, 64)
         self.up4 = up(128, 64)
         self.outc = outconv(64, n_classes)
         self.relu = nn.ReLU()
+        if init_w:
+            self._init_weights()
 
     def forward(self, x):
         x1 = self.inc(x)
@@ -506,3 +508,16 @@ class UNet(nn.Module):
         x = self.outc(x)
         #x = self.relu(x)
         return F.sigmoid(x)
+
+    def _init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)

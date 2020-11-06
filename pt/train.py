@@ -5,8 +5,8 @@
 # @Author  : LionZhu
 
 from loss import *
-# from nets.ISSegNet import *
-from nets.Unet import  *
+from nets.ISSegNet import *
+# from nets.Unet import  *
 from nets.cenet import *
 import torchvision.transforms as transforms
 from datasets import ImageDataset
@@ -14,18 +14,19 @@ from torch.utils.data import DataLoader
 from solver import *
 import matplotlib.pyplot as plt
 from save_img import *
+from tensorboardX import SummaryWriter
 
-Server = 0
+Server = 1
 #---------------------paths--------------------------------------------------
 if Server == 0:
     split_mark = '\\'
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys\dwi/'
+    path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys/flair/'
     data_path = path +'data/'
-    out_path = path + 'exps/exp1/'
+    out_path = path + 'exps/exp2/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
-    pretrain_path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data/npys\dwi\exps\exp3\pkls/net_paras.pkl'
+    pretrain_path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys\dwi\exps\exp1\pkls/net_paras.pkl'
     if not os.path.exists(npy_path):
         os.makedirs(npy_path)
     if not os.path.exists(pkl_path):
@@ -33,13 +34,13 @@ if Server == 0:
 
 elif Server == 1:
     split_mark = '/'
-    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
-    path = '/opt/zhc/dwi_flair/exp_data2/flair/'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    path = '/media/omnisky/Data/zhc2/diyiyiyuan/seg_npys/dwi/'
     data_path = path + 'data/'
     out_path = path + 'exps/exp3/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
-    pretrain_path = '/opt/zhc/dwi_flair/exp_data2/dwi/exps/exp4/pkls/net_paras_epoch300.pkl'
+    pretrain_path = '/media/omnisky/Data/zhc2/diyiyiyuan/seg_npys/dwi/exps/exp2/pkls/net_paras.pkl'
     if not os.path.exists(npy_path):
         os.makedirs(npy_path)
     if not os.path.exists(pkl_path):
@@ -52,7 +53,7 @@ img_paras = {'img_H': 224,
              'drop': 0.0}
 
 #------------training parameters----------------------------------------------
-train_paras = {'Epoch':200,
+train_paras = {'Epoch':100,
                'BS':32,
                'lr': 1e-4,
                'ValFlag': True,
@@ -62,9 +63,9 @@ train_paras = {'Epoch':200,
 SaveInterval = train_paras['Epoch'] // 2 if train_paras['Epoch'] // 2 > 0 else 1
 DecayInterval = train_paras['Epoch'] // 20 if train_paras['Epoch'] // 20 > 0 else 1
 
-# model = ISSegNet(in_channel= img_paras['in_channel'], class_num= img_paras['class_num'], )
+model = ISSegNet(in_channel= img_paras['in_channel'], class_num= img_paras['class_num'], )
 # model = UNet(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'])
-model = CE_Net_(num_classes= img_paras['class_num'])
+# model = CE_Net_(num_classes= img_paras['class_num'])
 # model.load_state_dict(torch.load(pretrain_path))
 model.to(device = device)
 optimizer = torch.optim.Adam(model.parameters(), lr=train_paras['lr'])
@@ -89,6 +90,7 @@ criterion = CE_DiceLoss(alpha=0.4)
 
 
 if __name__ == '__main__':
+    writer = SummaryWriter(out_path + 'logs/')
     lr = train_paras['lr']
     Train_loss = []
     Valid_loss = []
@@ -120,6 +122,7 @@ if __name__ == '__main__':
             loss_sum += loss.item()
         loss_sum = loss_sum / (i+1)
         Train_loss.append(loss_sum)
+        writer.add_scalar('train_loss:', loss_sum, epoch)
 
         # valid valid valid  --------------------------------------------------------------------------------------
         if train_paras['ValFlag']:
@@ -154,6 +157,9 @@ if __name__ == '__main__':
             print('valid dice: {}'.format(valid_dice))
             Valid_loss.append(loss_sum2)
             Valid_Dice.append(valid_dice)
+            writer.add_scalar('valid_loss:', loss_sum2, epoch)
+            writer.add_scalar('valid_dice', valid_dice, epoch)
+            writer.add_scalar('lr', lr, epoch)
             # early stop------------------------------
             # if loss_sum2 > Valid_loss[-1] and len(Valid_loss) >= 1:
             #     torch.save(model.state_dict(), pkl_path + 'net_paras_earlystop{}.pkl'.format(epoch + 1))
@@ -165,23 +171,23 @@ if __name__ == '__main__':
         if not np.isnan(loss_sum):
             torch.save(model.state_dict(), pkl_path + 'net_paras.pkl')
 
-        fig1 = plt.figure(1)
-        plt.plot(Ep, Train_loss, 'r')
-        plt.plot(Ep, Valid_loss, 'b')
-        plt.legend(['TrainLoss', 'ValidLoss'], loc='upper right')
-        plt.title('Loss vs. Epoch')
-        plt.pause(1)
-        plt.draw()
-        plt.savefig(out_path + 'loss.jpg', dpi=200)
-        plt.close(fig1)
-        fig1 = plt.figure(2)
-        plt.plot(Ep, Valid_Dice, 'b')
-        plt.legend(['Valid_Dice'], loc='upper right')
-        plt.title('Loss vs. Dice')
-        plt.pause(1)
-        plt.draw()
-        plt.savefig(out_path + 'validdice.jpg', dpi=200)
-        plt.close(fig1)
+    fig1 = plt.figure(1)
+    plt.plot(Ep, Train_loss, 'r')
+    plt.plot(Ep, Valid_loss, 'b')
+    plt.legend(['TrainLoss', 'ValidLoss'], loc='upper right')
+    plt.title('Loss vs. Epoch')
+    plt.pause(1)
+    plt.draw()
+    plt.savefig(out_path + 'loss.jpg', dpi=200)
+    plt.close(fig1)
+    fig1 = plt.figure(2)
+    plt.plot(Ep, Valid_Dice, 'b')
+    plt.legend(['Valid_Dice'], loc='upper right')
+    plt.title('Loss vs. Dice')
+    plt.pause(1)
+    plt.draw()
+    plt.savefig(out_path + 'validdice.jpg', dpi=200)
+    plt.close(fig1)
 
     # test test test test-----------------------------------------------------------------------------
     if train_paras['TestFlag']:
@@ -212,16 +218,16 @@ if __name__ == '__main__':
                 save_npys(out_path, name_pre, label, seg)
 
     # cal dice----------------------------------------------------------------------------------------------
-    pats = os.listdir(npy_path)
+    pats = os.listdir(npy_path + 'mask/')
     liver_label = 0
     liver_pred = 0
     liver_labPred = 0
     for j in range(len(pats)):
-        npys = os.listdir(npy_path + pats[j])
-        for img_i in range(0, len(npys), 2):
-            label_batch = np.load(npy_path + pats[j] + '/' + npys[img_i])
+        npys = os.listdir(npy_path + 'mask/' + pats[j])
+        for img_i in range(0, len(npys)):
+            label_batch = np.load(npy_path + 'mask/' + pats[j] + '/' + npys[img_i])
             # label_batch = label_batch[0:110, 10:128]
-            pred_batch = np.load(npy_path + pats[j] + '/' + npys[img_i+1])
+            pred_batch = np.load(npy_path + 'pred/' + pats[j] + '/' + npys[img_i])
             # pred_batch = pred_batch[0:110, 10:128]
             liver_label = liver_label + np.count_nonzero(label_batch == 1)
             liver_pred = liver_pred + np.count_nonzero(pred_batch == 1)

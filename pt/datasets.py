@@ -3,7 +3,7 @@ import random
 import os
 
 from torch.utils.data import Dataset
-from PIL import Image
+# from PIL import Image
 import torchvision.transforms as transforms
 import numpy as np
 

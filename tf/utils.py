@@ -131,6 +131,7 @@ def save_imgs(result_path, name_pre, label_batch, pred_batch, img_depth =1):
 
         smc.toimage(label_img_mat, cmin=0.0, cmax=255).save(
             casePath + str_split[1] + '-seg.png')
+        # cv2.imwrite(casePath + str_split[1] + '-seg.png', label_img_mat)
 
 
 def save_npys(res_path, name_pre, label_batch, pred_batch, score_batch= None):
