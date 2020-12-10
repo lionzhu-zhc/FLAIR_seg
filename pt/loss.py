@@ -26,12 +26,12 @@ def from_onehot(one_hot):
 
 
 class WeightCE(nn.Module):
-    def __init__(self, weight=None):
+    def __init__(self, weight=None, ignore_idx = -100):
         super(WeightCE, self).__init__()
         self.weight = weight
-
+        self.index_idx = ignore_idx
     def __call__(self, input, target):
-        Criterion = torch.nn.CrossEntropyLoss(self.weight)
+        Criterion = torch.nn.CrossEntropyLoss(self.weight, ignore_index= self.index_idx)
         if target.dtype != torch.long:
             target = target.long()
         loss = Criterion(input, target)

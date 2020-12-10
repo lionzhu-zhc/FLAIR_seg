@@ -478,8 +478,9 @@ class outconv(nn.Module):
         return x
 
 
+
 class UNet(nn.Module):
-    def __init__(self, n_channels=3, n_classes=1, init_w = False):
+    def __init__(self, n_channels=3, n_classes=1, init_w = False, deep_supervise= False):
         super(UNet, self).__init__()
         self.inc = inconv(n_channels, 64)
         self.down1 = down(64, 128)      # 1/2
@@ -487,11 +488,24 @@ class UNet(nn.Module):
         self.down3 = down(256, 512)     # 1/8
         self.down4 = down(512, 512)     # 1/16
         self.up1 = up(1024, 256)
+        self.conv1 = nn.Sequential( nn.Conv2d(256, 64, kernel_size=3, padding=1),
+                                    nn.BatchNorm2d(64),
+                                    nn.ReLU(inplace=True))
+        self.outc1 = outconv(64, n_classes)
         self.up2 = up(512, 128)
+        self.conv2 = nn.Sequential(nn.Conv2d(128, 64, kernel_size=3, padding=1),
+                                   nn.BatchNorm2d(64),
+                                   nn.ReLU(inplace=True))
+        self.outc2 = outconv(64, n_classes)
         self.up3 = up(256, 64)
+        self.conv3 = nn.Sequential(nn.Conv2d(64, 64, kernel_size=3, padding=1),
+                                   nn.BatchNorm2d(64),
+                                   nn.ReLU(inplace=True))
+        self.outc3 = outconv(64, n_classes)
         self.up4 = up(128, 64)
         self.outc = outconv(64, n_classes)
-        self.relu = nn.ReLU()
+
+        self.d_supervise = deep_supervise
         if init_w:
             self._init_weights()
 
@@ -501,18 +515,34 @@ class UNet(nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        x = self.up1(x5, x4)
-        x = self.up2(x, x3)
-        x = self.up3(x, x2)
-        x = self.up4(x, x1)
+        x = self.up1(x5, x4)        #1/8
+        if self.d_supervise:
+            logits_1 = self.conv1(x)
+            logits_1 = F.interpolate(logits_1, scale_factor=8, mode='bilinear')
+            logits_1 = self.outc1(logits_1)
+        x = self.up2(x, x3)         #1/4
+        if self.d_supervise:
+            logits_2 = self.conv2(x)
+            logits_2 = F.interpolate(logits_2, scale_factor=4, mode='bilinear')
+            logits_2 = self.outc2(logits_2)
+        x = self.up3(x, x2)         #1/2
+        if self.d_supervise:
+            logits_3 = self.conv3(x)
+            logits_3 = F.interpolate(logits_3, scale_factor=2, mode='bilinear')
+            logits_3 = self.outc3(logits_3)
+        x = self.up4(x, x1)         #1
         x = self.outc(x)
-        #x = self.relu(x)
-        return F.sigmoid(x)
+
+        if self.d_supervise:
+            return torch.sigmoid(x), torch.sigmoid(logits_1), torch.sigmoid(logits_2), torch.sigmoid(logits_3)
+        else:
+            return torch.sigmoid(x)
 
     def _init_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                # nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.xavier_uniform_(m.weight, gain=1)
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
             elif isinstance(m, nn.BatchNorm2d):
@@ -521,3 +551,10 @@ class UNet(nn.Module):
             elif isinstance(m, nn.Linear):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
+
+if __name__ == '__main__':
+    input = torch.randn([8,1,224,224]).cuda()
+    model = UNet(n_channels= 1, n_classes= 2, init_w= True, deep_supervise= True)
+    model.cuda()
+    probs, logits1, logits2, logits_3 = model(input)
+    print(model)

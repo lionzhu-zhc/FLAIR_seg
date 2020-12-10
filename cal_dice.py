@@ -3,9 +3,8 @@ import os
 
 
 # ori_path = '/opt/zhc/dwi_flair/exp_data2/flair/exps/'
-path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys/flair/'
-data_path = path + 'data/'
-out_path = path + 'exps/exp4/'
+path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data/224x224xN\seg_npys/flair\seg_exps/'
+out_path = path + '/exp1/'
 npy_path = out_path + 'npys/'
 
 pats = os.listdir(npy_path + 'mask/')
@@ -28,7 +27,8 @@ for j in range(len(pats)):
         common = label_bool * pred_bool
         liver_labPred = liver_labPred + np.count_nonzero(common)
 liver_dice_coe = 2 * liver_labPred / (liver_label + liver_pred + 1e-6)
-with open(path + 'exps/dice.txt', 'a+') as resltFile:
+print('test dice: ' + ":  %.3f " %(liver_dice_coe))
+with open(path + 'dice.txt', 'a+') as resltFile:
     resltFile.write(out_path + ":  %.3f " %(liver_dice_coe) +
                     'label: {} pred: {} labpred: {} \n'.format(liver_label, liver_pred, liver_labPred))
 
