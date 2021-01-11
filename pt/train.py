@@ -8,6 +8,7 @@ from loss import *
 # from nets.ISSegNet import *
 # from nets.Unet import  *
 from nets.cenet import *
+from nets.CM_Net import *
 # import torchvision.transforms as transforms
 from datasets import ImageDataset
 from torch.utils.data import DataLoader
@@ -18,14 +19,14 @@ import matplotlib.pyplot as plt
 from save_img import *
 from tensorboardX import SummaryWriter
 
-Server = 1
+Server = 0
 #---------------------paths--------------------------------------------------
 if Server == 0:
     split_mark = '\\'
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys/dwi/'
+    path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data/224x224xN\seg_npys/dwi/'
     data_path = path +'data/'
-    out_path = path + 'seg_exps/exp1/'
+    out_path = path + 'seg_exps/exp10/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
     pretrain_path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys\dwi\exps\exp1\pkls/net_paras.pkl'
@@ -36,10 +37,11 @@ if Server == 0:
 
 elif Server == 1:
     split_mark = '/'
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = '/media/omnisky/Data1/zhc2/diyiyiyuan/flair/'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+    # path = '/media/omnisky/Data1/zhc2/dyyy/dwi/'
+    path = '/mnt/zhc/dyyy/seg_npys/dwi/'
     data_path = path + 'data/'
-    out_path = path + 'seg_exps/exp2/'
+    out_path = path + 'seg_exps/exp3/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
     pretrain_path = '/media/omnisky/Data/zhc2/diyiyiyuan/seg_npys/dwi/exps/exp2/pkls/net_paras.pkl'
@@ -56,7 +58,7 @@ img_paras = {'img_H': 224,
 
 #------------training parameters----------------------------------------------
 train_paras = {'Epoch':200,
-               'BS':32,
+               'BS':16,
                'lr': 1e-4,
                'ValFlag': True,
                'TestFlag': True,
@@ -67,8 +69,9 @@ SaveInterval = train_paras['Epoch'] // 2 if train_paras['Epoch'] // 2 > 0 else 1
 DecayInterval = train_paras['Epoch'] // 20 if train_paras['Epoch'] // 20 > 0 else 1
 
 # model = ISSegNet(in_channel= img_paras['in_channel'], class_num= img_paras['class_num'], )
-model = UNet(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'],
-             init_w= True, deep_supervise= train_paras['DeepSuperv'])
+# model = UNet(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'],
+#              init_w= True, deep_supervise= train_paras['DeepSuperv'])
+model = CMNet_OnePath(img_paras['in_channel'], img_paras['class_num'], [224,224], layers= [3, 3, 3, 3, 1])
 # model = CE_Net_(num_classes= img_paras['class_num'])
 # model.load_state_dict(torch.load(pretrain_path))
 model.to(device = device)
@@ -260,7 +263,7 @@ if __name__ == '__main__':
     liver_dice_coe = 2 * liver_labPred / (liver_label + liver_pred + 1e-6)
     print(out_path + ":  %.3f " %(liver_dice_coe))
     with open(path + 'seg_exps/dice.txt', 'a+') as resltFile:
-        resltFile.write(out_path + ":  %.3f " %(liver_dice_coe) +
+        resltFile.write(out_path[-20:] + ":  %.3f " %(liver_dice_coe) +
                         'label: {} pred: {} labpred: {} \n'.format(liver_label, liver_pred, liver_labPred))
 
     print('ok')

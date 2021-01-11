@@ -18,44 +18,6 @@ import torch
 import pt.loss as loss
 import scipy.io as sio
 
-# fig1 = plt.figure(1)
-# a = [0,1,2,3,4]
-# plt.plot(a)
-# plt.pause(1)
-# plt.draw()
-# plt.savefig('xx.jpg', dpi=200)
-# plt.close(fig1)
-# path = 'D:\datasets\diyiyiyuan\DWIFLAIR\dwi_npy2d_all\exps\exp1\imgs/'
-# ori_path = 'D:\datasets\diyiyiyuan\DWIFLAIR/dwi_npy2d_all/test/'
-# dst_path = 'D:\datasets\diyiyiyuan\DWIFLAIR/dwi_npy2d_all/valid/'
-# ori_path2 = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all/test/'
-# dst_path2 = 'D:\datasets\diyiyiyuan\DWIFLAIR/flair_npy2d_all/valid/'
-#
-# pats = os.listdir(path)
-# random.shuffle(pats)
-
-# for i in range (40):
-#     pat = pats[i]
-#     npys = os.listdir(ori_path+'img/')
-#     for npy in npys:
-#         splts = npy.split('_')
-#         if pat == splts[0]:
-#             shutil.copy(ori_path+'img/'+npy, dst_path+'img/'+npy)
-#             shutil.copy(ori_path+'seg/'+npy, dst_path+'seg/'+npy)
-#             shutil.copy(ori_path2+'img/'+npy, dst_path2+'img/'+npy)
-#             shutil.copy(ori_path2+'seg/'+npy, dst_path2+'seg/'+npy)
-#
-# for i in range (40):
-#     pat = pats[i]
-#     npys = os.listdir(ori_path+'img/')
-#     for npy in npys:
-#         splts = npy.split('_')
-#         if pat == splts[0]:
-#             os.remove(ori_path+'img/'+npy)
-#             os.remove(ori_path+'seg/'+npy)
-#             os.remove(ori_path2 + 'img/' + npy)
-#             os.remove(ori_path2+'seg/'+npy)
-
 
 #
 # plt.imshow(a, cmap='gray', vmin=-0.5, vmax=1)
@@ -71,53 +33,9 @@ import scipy.io as sio
 # cv2.imshow("img", img)
 # cv2.waitKey(0)
 
-path1 = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data/224x224xN/resize_mat\more45\dwi\seg/'
-path2 = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data/224x224xN/resize_mat\more45/flair\seg/'
-pat = 'S60021-3.mat'
-
-dwi = sio.loadmat(path1+pat)
-flair = sio.loadmat(path2+pat)
-
-dmat = dwi['mat']
-fmat = flair['mat']
-
-for i in range (dmat.shape[0]):
-    print(i)
-    d = dmat[i, ...]
-    f = fmat[i, ...]
-
-    label_img_mat = np.zeros((3, 224, 224))
-    label_img_mat[...] = 128
-    d_cord = np.where(d == 1)
-    # blue, dwi
-    label_img_mat[0, d_cord[0], d_cord[1]] = 50
-    label_img_mat[1, d_cord[0], d_cord[1]] = 50
-    label_img_mat[2, d_cord[0], d_cord[1]] = 250
-
-    f_cord = np.where(f == 1)
-    # green, flair
-    label_img_mat[0, f_cord[0], f_cord[1]] = 10
-    label_img_mat[1, f_cord[0], f_cord[1]] = 210
-    label_img_mat[2, f_cord[0], f_cord[1]] = 10
-
-    label_img_mat = np.transpose(label_img_mat, [1, 2, 0])
-    plt.imshow(label_img_mat.astype(np.uint8))
-    plt.pause(1)
 
 
-# npys = os.listdir(path+'img/')
-# for name in npys:
-#     names = name.split('_')
-#     if names[-1] == 'dwi.npy':
-#         dwi_img = np.load(path+'img/'+name)
-#         dwi_seg = np.load(path+'seg/'+name)
-#         np.save(dst_path1 + 'img/' + names[0]+'_'+names[1] + '.npy', dwi_img)
-#         np.save(dst_path1 + 'seg/' + names[0]+'_'+names[1] + '.npy', dwi_seg)
-#     if names[-1] == 'flair.npy':
-#         flair_img = np.load(path+'img/'+name)
-#         flair_seg = np.load(path+'seg/'+name)
-#         np.save(dst_path2 + 'img/' + names[0]+'_'+names[1] + '.npy', flair_img)
-#         np.save(dst_path2 + 'seg/' + names[0]+'_'+names[1] + '.npy', flair_seg)
+
 
 # coding: utf-8
 

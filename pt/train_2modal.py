@@ -8,6 +8,7 @@ from loss import *
 # from nets.ISSegNet import *
 # from nets.Unet import  *
 from nets.Unet_2Modal import *
+from nets.CM_Net import *
 # import torchvision.transforms as transforms
 from datasets import ImageDataset_2M
 from torch.utils.data import DataLoader
@@ -25,7 +26,7 @@ if Server == 0:
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data/224x224xN/seg_npys/'
     data_path = path
-    out_path = path + 'flair/seg_exps/exp1/'
+    out_path = path + 'flair/seg_exps/exp3/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
     pretrain_path = 'D:\datasets\diyiyiyuan\DWIFLAIR\exp_data\seg_npys\dwi\exps\exp1\pkls/net_paras.pkl'
@@ -37,9 +38,9 @@ if Server == 0:
 elif Server == 1:
     split_mark = '/'
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    path = '/media/omnisky/Data1/zhc2/dyyy/seg_npys/'
+    path = '/mnt/zhc/dyyy/seg_npys/'
     data_path = path
-    out_path = path + 'flair/seg_exps/exp1/'
+    out_path = path + 'flair/seg_exps/exp4/'
     npy_path = out_path + 'npys/'
     pkl_path = out_path + 'pkls/'
     pretrain_path = '/media/omnisky/Data/zhc2/diyiyiyuan/seg_npys/dwi/exps/exp2/pkls/net_paras.pkl'
@@ -57,7 +58,7 @@ img_paras = {'img_H': 224,
 
 #------------training parameters----------------------------------------------
 train_paras = {'Epoch':200,
-               'BS':16,
+               'BS':8,
                'lr': 1e-4,
                'ValFlag': True,
                'TestFlag': True,
@@ -67,14 +68,16 @@ train_paras = {'Epoch':200,
 SaveInterval = train_paras['Epoch'] // 2 if train_paras['Epoch'] // 2 > 0 else 1
 DecayInterval = train_paras['Epoch'] // 20 if train_paras['Epoch'] // 20 > 0 else 1
 
-model = UNet_2M(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'],
-                init_w=True, deep_supervise=train_paras['DeepSuperv'])
+# model = UNet_2M(n_channels=img_paras['in_channel'], n_classes= img_paras['class_num'],
+#                 init_w=True, deep_supervise=train_paras['DeepSuperv'])
+
+model = CMNet_TwoPath(img_paras['in_channel'], img_paras['class_num'], [224,224], layers= [3, 3, 3, 3, 1])
 
 model.to(device = device)
 optimizer = torch.optim.Adam(model.parameters(), lr=train_paras['lr'])
 weights = torch.Tensor([0.1,1]).to(device=device)
-criterion = CE_DiceLoss(alpha=0.1)
-criterion = WeightCE(weight= weights)
+criterion = CE_DiceLoss(alpha=0.4, weight= weights)
+# criterion = WeightCE(weight= weights)
 
 if __name__ == '__main__':
     writer = SummaryWriter(out_path + 'logs/')
@@ -89,9 +92,9 @@ if __name__ == '__main__':
         model.train()
         loss_sum = 0
         Ep.append(epoch)
-        if epoch % DecayInterval == 0 and epoch > 0:
-            lr = lr * 0.9
-            adjust_lr(optimizer= optimizer, LR= lr)
+        # if epoch % DecayInterval == 0 and epoch > 0:
+        #     lr = lr * 0.9
+        #     adjust_lr(optimizer= optimizer, LR= lr)
 
         data_train = DataLoader(ImageDataset_2M(data_path+'dwi/', data_path+'flair/', aug=True, mode='train'),
                                 batch_size=train_paras['BS'], shuffle=True, num_workers=4)
@@ -235,7 +238,7 @@ if __name__ == '__main__':
     liver_dice_coe = 2 * liver_labPred / (liver_label + liver_pred + 1e-6)
     print('test dice: ' + ":  %.3f " %(liver_dice_coe))
     with open(path + 'flair/seg_exps/dice.txt', 'a+') as resltFile:
-        resltFile.write(out_path + ":  %.3f " %(liver_dice_coe) +
+        resltFile.write(out_path[-20:] + ":  %.3f " %(liver_dice_coe) +
                         'label: {} pred: {} labpred: {} \n'.format(liver_label, liver_pred, liver_labPred))
 
     print('ok')

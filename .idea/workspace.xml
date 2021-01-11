@@ -12,9 +12,9 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/FLAIR_seg$train_tf.coverage" NAME="train_tf Coverage Results" MODIFIED="1599018384592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tf" />
     <SUITE FILE_PATH="coverage/FLAIR_seg$py_test.coverage" NAME="py_test Coverage Results" MODIFIED="1596532062248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FLAIR_seg$train_2modal.coverage" NAME="train_2modal Coverage Results" MODIFIED="1606910830541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pt" />
+    <SUITE FILE_PATH="coverage/FLAIR_seg$train_2modal.coverage" NAME="train_2modal Coverage Results" MODIFIED="1610074471111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pt" />
     <SUITE FILE_PATH="coverage/FLAIR_seg$train_3d.coverage" NAME="train_3d Coverage Results" MODIFIED="1595929153899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FLAIR_seg$train.coverage" NAME="train Coverage Results" MODIFIED="1604912975759" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pt" />
+    <SUITE FILE_PATH="coverage/FLAIR_seg$train.coverage" NAME="train Coverage Results" MODIFIED="1610094709539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pt" />
     <SUITE FILE_PATH="coverage/FLAIR_seg$cenet.coverage" NAME="cenet Coverage Results" MODIFIED="1604912472584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pt/nets" />
     <SUITE FILE_PATH="coverage/FLAIR_seg$cal_dice.coverage" NAME="cal_dice Coverage Results" MODIFIED="1607131217391" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FLAIR_seg$datasets.coverage" NAME="datasets Coverage Results" MODIFIED="1603708493925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pt" />
@@ -31,8 +31,18 @@
       <file leaf-file-name="loss.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pt/loss.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="86" column="14" lean-forward="false" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+            <state relative-caret-position="988">
+              <caret line="56" column="71" lean-forward="false" selection-start-line="56" selection-start-column="71" selection-end-line="56" selection-end-column="71" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="py_test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pt/py_test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="13" column="11" lean-forward="false" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -41,34 +51,10 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pt/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2147">
-              <caret line="113" column="89" lean-forward="false" selection-start-line="113" selection-start-column="89" selection-end-line="113" selection-end-column="89" />
+            <state relative-caret-position="1387">
+              <caret line="73" column="106" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="106" />
               <folding>
                 <element signature="e#99#117#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="datasets.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pt/datasets.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="93" column="70" lean-forward="false" selection-start-line="93" selection-start-column="70" selection-end-line="93" selection-end-column="70" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DenseBiasNet.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pt/nets/DenseBiasNet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="301" column="31" lean-forward="false" selection-start-line="301" selection-start-column="30" selection-end-line="301" selection-end-column="31" />
-              <folding>
-                <element signature="e#98#109#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,11 +63,37 @@
       <file leaf-file-name="train_2modal.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pt/train_2modal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="75" column="33" lean-forward="false" selection-start-line="75" selection-start-column="33" selection-end-line="75" selection-end-column="33" />
+            <state relative-caret-position="1064">
+              <caret line="65" column="16" lean-forward="false" selection-start-line="65" selection-start-column="16" selection-end-line="65" selection-end-column="16" />
               <folding>
                 <element signature="e#100#118#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CM_Net.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pt/nets/CM_Net.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2546">
+              <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+              <folding>
+                <element signature="e#21#59#0" expanded="true" />
+                <element signature="e#2337#3869#0" expanded="false" />
+                <element signature="e#3906#5612#0" expanded="false" />
+                <element signature="e#5721#8749#0" expanded="false" />
+                <element signature="e#35135#35264#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cenet.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pt/nets/cenet.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="488" column="46" lean-forward="false" selection-start-line="488" selection-start-column="46" selection-end-line="488" selection-end-column="46" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -113,16 +125,19 @@
       <find>cv2</find>
       <find>UNet</find>
       <find>res_path</find>
-      <find>iter</find>
       <find>sigmoid</find>
       <find>SGD</find>
       <find>DeepSuperv</find>
       <find>split</find>
       <find>partial</find>
       <find>split_mark</find>
-      <find>item</find>
       <find>msk_names</find>
       <find>data_path</find>
+      <find>iter</find>
+      <find>argmin</find>
+      <find>argm</find>
+      <find>PIL</find>
+      <find>item</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -158,14 +173,16 @@
         <option value="$PROJECT_DIR$/pt/nets/cenet.py" />
         <option value="$PROJECT_DIR$/pt/train_3d.py" />
         <option value="$PROJECT_DIR$/pt/nets/HRNet.py" />
-        <option value="$PROJECT_DIR$/pt/loss.py" />
         <option value="$PROJECT_DIR$/pt/nets/HyperDenseNet.py" />
         <option value="$PROJECT_DIR$/pt/nets/Unet.py" />
         <option value="$PROJECT_DIR$/pt/nets/Unet_2Modal.py" />
-        <option value="$PROJECT_DIR$/pt/py_test.py" />
         <option value="$PROJECT_DIR$/pt/datasets.py" />
         <option value="$PROJECT_DIR$/cal_dice.py" />
+        <option value="$PROJECT_DIR$/pt/nets/unet3d.py" />
+        <option value="$PROJECT_DIR$/pt/py_test.py" />
         <option value="$PROJECT_DIR$/pt/train.py" />
+        <option value="$PROJECT_DIR$/pt/loss.py" />
+        <option value="$PROJECT_DIR$/pt/nets/CM_Net.py" />
         <option value="$PROJECT_DIR$/pt/train_2modal.py" />
       </list>
     </option>
@@ -176,7 +193,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -198,7 +215,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -228,16 +244,18 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="E:/PytorchProjects/HyperDenseNet_pytorch-master" />
+    <property name="last_opened_file_path" value="E:/PytorchProjects/HRNet-Semantic-Segmentation-pytorch-v1.1" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\git\StrokePytorch\FLAIR_seg\pt\nets" />
       <recent name="D:\git\StrokePytorch\FLAIR_seg" />
     </key>
   </component>
@@ -253,7 +271,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.cal_dice">
+  <component name="RunManager" selected="Python.train">
     <configuration name="cal_dice" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -358,10 +376,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.cal_dice" />
+        <item index="0" class="java.lang.String" itemvalue="Python.train" />
         <item index="1" class="java.lang.String" itemvalue="Python.train_2modal" />
-        <item index="2" class="java.lang.String" itemvalue="Python.py_test (1)" />
-        <item index="3" class="java.lang.String" itemvalue="Python.train" />
+        <item index="2" class="java.lang.String" itemvalue="Python.cal_dice" />
+        <item index="3" class="java.lang.String" itemvalue="Python.py_test (1)" />
         <item index="4" class="java.lang.String" itemvalue="Python.cenet" />
       </list>
     </recent_temporary>
@@ -383,22 +401,22 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24" sideWeight="0.31876332" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.6812367" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32900432" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24972972" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20972973" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.6812367" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23560767" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25159913" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="false" weight="0.4792111" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="717" y="296" width="566" height="548" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24324325" sideWeight="0.4978678" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24248704" sideWeight="0.4978678" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -460,12 +478,12 @@
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pt/py_test.py</url>
-          <line>103</line>
-          <option name="timeStamp" value="74" />
+          <url>file://$PROJECT_DIR$/pt/train.py</url>
+          <line>135</line>
+          <option name="timeStamp" value="75" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="75" />
+      <option name="time" value="77" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -479,7 +497,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/datasets.py" />
     <entry file="file://$PROJECT_DIR$/loss.py" />
     <entry file="file://$PROJECT_DIR$/ISSegNet.py" />
     <entry file="file://$PROJECT_DIR$/save_img.py" />
@@ -531,20 +548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pt/preprocess/nii2npys.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pt/solver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="6" column="9" lean-forward="false" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pt/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -574,13 +577,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pt/nets/HRNet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="701">
-          <caret line="480" column="32" lean-forward="true" selection-start-line="480" selection-start-column="32" selection-end-line="480" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tf/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2071">
@@ -596,39 +592,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pt/nets/unet3d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="12" column="13" lean-forward="true" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pt/train_3d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="106" column="46" lean-forward="false" selection-start-line="106" selection-start-column="46" selection-end-line="106" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pt/xx.jpg" />
-    <entry file="file://$PROJECT_DIR$/pt/nets/cenet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-76">
-          <caret line="11" column="20" lean-forward="false" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pt/py_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1976">
-          <caret line="104" column="16" lean-forward="false" selection-start-line="104" selection-start-column="16" selection-end-line="104" selection-end-column="16" />
-          <folding>
-            <element signature="e#99#117#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cal_dice.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
@@ -637,68 +601,123 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pt/nets/Unet_2Modal.py">
+    <entry file="file://$PROJECT_DIR$/pt/nets/DenseBiasNet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1356">
-          <caret line="88" column="53" lean-forward="false" selection-start-line="88" selection-start-column="53" selection-end-line="88" selection-end-column="53" />
-          <folding>
-            <element signature="e#98#119#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="5662">
+          <caret line="301" column="31" lean-forward="false" selection-start-line="301" selection-start-column="30" selection-end-line="301" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/nets/unet3d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="79" lean-forward="false" selection-start-line="19" selection-start-column="75" selection-end-line="19" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/train_3d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="779">
+          <caret line="83" column="18" lean-forward="false" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/solver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="6" column="4" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/preprocess/nii2npys.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pt/save_img.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="57" column="4" lean-forward="false" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
+        <state relative-caret-position="190">
+          <caret line="13" column="4" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/nets/HRNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="291" column="0" lean-forward="false" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/datasets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="93" column="70" lean-forward="false" selection-start-line="93" selection-start-column="70" selection-end-line="93" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/py_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="11" lean-forward="false" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pt/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2147">
-          <caret line="113" column="89" lean-forward="false" selection-start-line="113" selection-start-column="89" selection-end-line="113" selection-end-column="89" />
+        <state relative-caret-position="1387">
+          <caret line="73" column="106" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="106" />
           <folding>
             <element signature="e#99#117#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pt/datasets.py">
+    <entry file="file://$PROJECT_DIR$/pt/nets/Unet_2Modal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="93" column="70" lean-forward="false" selection-start-line="93" selection-start-column="70" selection-end-line="93" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="236">
+          <caret line="172" column="32" lean-forward="true" selection-start-line="172" selection-start-column="32" selection-end-line="172" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pt/loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="86" column="14" lean-forward="false" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+        <state relative-caret-position="988">
+          <caret line="56" column="71" lean-forward="false" selection-start-line="56" selection-start-column="71" selection-end-line="56" selection-end-column="71" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pt/train_2modal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="75" column="33" lean-forward="false" selection-start-line="75" selection-start-column="33" selection-end-line="75" selection-end-column="33" />
+        <state relative-caret-position="1064">
+          <caret line="65" column="16" lean-forward="false" selection-start-line="65" selection-start-column="16" selection-end-line="65" selection-end-column="16" />
           <folding>
             <element signature="e#100#118#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pt/nets/DenseBiasNet.py">
+    <entry file="file://$PROJECT_DIR$/pt/nets/cenet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="301" column="31" lean-forward="false" selection-start-line="301" selection-start-column="30" selection-end-line="301" selection-end-column="31" />
+        <state relative-caret-position="321">
+          <caret line="488" column="46" lean-forward="false" selection-start-line="488" selection-start-column="46" selection-end-line="488" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pt/nets/CM_Net.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2546">
+          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding>
-            <element signature="e#98#109#0" expanded="true" />
+            <element signature="e#21#59#0" expanded="true" />
+            <element signature="e#2337#3869#0" expanded="false" />
+            <element signature="e#3906#5612#0" expanded="false" />
+            <element signature="e#5721#8749#0" expanded="false" />
+            <element signature="e#35135#35264#0" expanded="false" />
           </folding>
         </state>
       </provider>
